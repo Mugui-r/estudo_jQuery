@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style type="text/css">
+        body {margin: 0;}
+        .horaEscolha {
+            width: 105px;
+            height: 100px;
+            background-color: #eee;
+            position: absolute;
+            display: none;
+        }
+        
+    </style>
+</head>
+<body>
+    <form>
+        <div>
+            <label for="hora1">Hora 1: </label> <br>
+            <input type="text" id="hora1" name="hora1">
+            
+        </div> <br>
+         <div>
+            <label for="hora2">Hora 2: </label> <br>
+            <input type="text" id="hora2" name="hora2">
+            
+        </div> <br>
+         <div>
+            <label for="hora3">Hora 3: </label> <br>
+            <input type="text" id="hora3" name="hora3">
+            
+        </div> <br>
+         <div>
+            <label for="hora4">Hora 4: </label> <br>
+            <input type="text" id="hora4" name="hora4">
+            
+        </div> <br>
+       
+        <div class="horaEscolha">
+            <button>10:00</button>
+            <button>13:00</button>
+            <button>16:00</button>
+            <button>20:00</button>
+        </div>
+    </form>
+
+    <script>
+        $('input').bind('focus', function(){
+
+            let pos = $(this).offset();
+            let width = $(this).width();
+
+            $('.horaEscolha').css('left', pos.left + width)
+            $('.horaEscolha').css('top', pos.top)
+            $('.horaEscolha').show()
+
+            horaEscolhaCampo = $(this)
+            
+        })
+
+        $('input').bind('blur', function(){
+            setTimeout(function(){
+                 $('.horaEscolha').hide()
+            }, 200)
+           
+    
+        })
+
+        $('.horaEscolha button').bind('click', function(e){
+            e.preventDefault();
+            let hora = $(this).html()
+            horaEscolhaCampo.val(hora)
+            
+        })
+        
+    </script>
+</body>
+</html>

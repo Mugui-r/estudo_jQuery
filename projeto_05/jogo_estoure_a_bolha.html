@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Estoura Bolas</title>
+    <style>
+        body { font-family: sans-serif; }
+        .placar { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; width: 200px; }
+        #game-area { width: 800px; height: 500px; border: 2px solid #000; background-color: #f0f0f0; position: relative; overflow: hidden; }
+        .bola { background-color: #DB4437; border-radius: 50%; position: absolute; cursor: pointer; }
+        .bola-p { width: 20px; height: 20px; }
+        .bola-m { width: 40px; height: 40px; }
+        .bola-g { width: 60px; height: 60px; }
+    </style>
+</head>
+<body>
+
+    <div class="placar">
+        Bolas estouradas:<br>
+        <span id="placar">0</span><br><br>
+        Tempo: <span id="tempo">60</span><br><br>
+        <button id="comecar">Começar o Jogo</button>
+    </div>
+
+    <div id="game-area"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+
+            
+            let placar;
+            let tempo;
+            let timerId = null; 
+
+            $('#comecar').on('click', function() {
+                iniciarJogo();
+            });
+
+
+            function iniciarJogo() {
+                placar = 0;
+                tempo = 60;
+                updatePlacar();
+                updateTempo();
+                $('#comecar').hide(); 
+                $('#game-area').empty();
+
+                timerId = setInterval(cicloDoContador, 1000); 
+                gameIntervalId = setInterval(addBola, 800);  
+            }
+            
+            function pararJogo() {
+                clearInterval(timerId);
+                clearInterval(gameIntervalId);
+
+                alert("Fim de Jogo! Sua pontuação foi: " + placar);
+                $('#game-area').empty(); 
+                $('#comecar').show();    
+            }
+
+
+            function cicloDoContador() {
+                tempo--;
+                updateTempo();
+                if (tempo <= 0) {
+                }
+            }
+
+            function addBola() {
+                let gameArea = $('#game-area');
+                let largura = gameArea.width();
+                let altura = gameArea.height();
+
+                let x = Math.floor(Math.random() * (largura - 60));
+                let y = Math.floor(Math.random() * (altura - 60));
+
+                let tamanhos = ['bola-p', 'bola-m', 'bola-g'];
+                let indiceAleatorio = Math.floor(Math.random() * tamanhos.length);
+                let classeTamanho = tamanhos[indiceAleatorio];
+
+                let bola = $('<div class="bola ' + classeTamanho + '"></div>');
+                bola.css('left', x + 'px');
+                bola.css('top', y + 'px');
+
+                bola.on('click', function() {
+                    $(this).fadeOut('fast', function() {
+                        $(this).remove();
+                    });
+                    placar++;
+                    updatePlacar();
+                });
+
+                gameArea.append(bola);
+            }
+
+            function updatePlacar() {
+                $('#placar').text(placar);
+            }
+
+            function updateTempo() {
+                $('#tempo').text(tempo);
+            }
+        });
+    </script>
+
+</body>
+</html>
